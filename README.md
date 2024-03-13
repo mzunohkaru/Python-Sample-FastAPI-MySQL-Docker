@@ -8,7 +8,7 @@ $ docker compose up --build
 $ docker-compose up
 $ docker-compose up -d
 
-##新しいPythonパッケージを追加した場合
+## 新しいPythonパッケージを追加した場合
 $ docker-compose build --no-cache
 
 ## データベース (MySQL) へのアクセス
