@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    command: sh -c "uvicorn api.main:app --reload --port=8000 --host=0.0.0.0"
+    env_file:
+      - .env
+    ports:
+      # ホストマシンのポート8000を、docker内のポート8000に接続する
+      - "8000:8000"
+    volumes:
+      - .:/app
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: todo
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      TZ: 'Asia/Tokyo'  # タイムゾーンを日本時間に設定
+    volumes:
+      - mysql_data:/var/lib/mysql
+    # MySQL8.0ではデフォルトが"caching_sha2_password"で、ドライバが非対応のため変更
+    # mysql_native_password : パスワードをハッシュ化して保存する認証プラグイン
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - "3306:3306"
+volumes:
+  mysql_data:
+
